@@ -8,7 +8,7 @@ void execute_chosen_command(FC flags, char *opts_args[]);
 
 int main(int argc, char *argv[])
 {
-    int result = SUCCESS_RESULT;
+    int result = EXIT_SUCCESS;
     const unsigned OPTS_WITH_ARGS_COUNT = 3;
     char **optargs = allocate_memory_for_option_arguments(OPTS_WITH_ARGS_COUNT);
     FC flags = generate_empty_flags_container();
@@ -20,14 +20,14 @@ int main(int argc, char *argv[])
 
     if (error_occurred(flags))
     {
-        result = FAILURE_RESULT;
+        result = EXIT_FAILURE;
     }
     else
     {
         execute_chosen_command(flags, optargs);
     }
     deallocate_option_arguments_memory(optargs, OPTS_WITH_ARGS_COUNT);
-
+    
     return result;
 }
 

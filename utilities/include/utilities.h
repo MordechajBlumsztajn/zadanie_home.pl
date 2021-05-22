@@ -29,12 +29,6 @@ enum OPTS_ERROR_FLAG
     NON_OPT_ARG_ERROR       = 0x10
 };
 
-enum MAIN_FUNC_RESULT 
-{
-    SUCCESS_RESULT = 0,
-    FAILURE_RESULT = 1
-};
-
 struct flags_container
 {
     int opt_flags;

@@ -5,7 +5,8 @@ void copy_option_argument(char** destination, enum OPTS_WITH_ARGS_INDEX_ORDER in
     destination[index] = (char*) malloc((strlen(source) + 1) * sizeof(char));
     if (NULL == destination[index])
     {
-        exit(ENOMEM);
+        fprintf(stderr, "critical error: %s\n", strerror(errno));
+        exit(errno);
     }
     strcpy(destination[index], source);
 }
@@ -108,7 +109,8 @@ char** allocate_memory_for_option_arguments(unsigned args_count)
     char** optargs = (char**) calloc(args_count, sizeof(char*));
     if (NULL == optargs)
     {
-        exit(ENOMEM);
+        fprintf(stderr, "critical error: %s\n", strerror(errno));
+        exit(errno);
     }
 
     return optargs;
