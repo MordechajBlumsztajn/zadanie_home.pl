@@ -161,15 +161,10 @@ bool error_occurred(FC flags)
 
 char** allocate_memory_for_option_arguments(unsigned args_count)
 {
-    char** optargs = (char**) malloc(args_count * sizeof(char*));
+    char** optargs = (char**) calloc(args_count, sizeof(char*));
     if (NULL == optargs)
     {
         exit(ENOMEM);
-    }
-
-    for (unsigned i = 0; i < args_count; i++)
-    {
-        optargs[i] = NULL;
     }
 
     return optargs;
