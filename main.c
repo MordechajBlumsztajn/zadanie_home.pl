@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <getopt.h>
 
 enum OPTS_FLAG
 {
@@ -13,7 +14,7 @@ enum OPTS_FLAG
     OPT_u_FLAG      = 0x2, // mandatory and exclusive
     OPT_n_FLAG      = 0x4, // mandatory and exclusive
 
-    OPT_f_FLAG      = 0x8 // optional
+    OPT_f_FLAG      = 0x8 // optional and inclusive
 };
 
 enum OPTS_WITH_ARGS_INDEX_ORDER
@@ -52,6 +53,7 @@ FC generate_empty_flags_container()
     FC flags;
     flags.opt_flags = NO_OPT_FLAG;
     flags.errors_flags = NO_ERROR;
+    return flags;
 }
 
 void copy_option_argument(char** destination, enum OPTS_WITH_ARGS_INDEX_ORDER index, char* source)
@@ -157,7 +159,7 @@ bool error_occurred(FC flags)
     return flags.errors_flags > 0;
 }
 
-char** allocate_memory_for_option_arguments(int args_count)
+char** allocate_memory_for_option_arguments(unsigned args_count)
 {
     char** optargs = (char**) malloc(args_count * sizeof(char*));
     if (NULL == optargs)
@@ -165,7 +167,7 @@ char** allocate_memory_for_option_arguments(int args_count)
         exit(ENOMEM);
     }
 
-    for (size_t i = 0; i < args_count; i++)
+    for (unsigned i = 0; i < args_count; i++)
     {
         optargs[i] = NULL;
     }
@@ -173,9 +175,9 @@ char** allocate_memory_for_option_arguments(int args_count)
     return optargs;
 }
 
-void deallocate_option_arguments_memory(char** optargs, int args_count)
+void deallocate_option_arguments_memory(char** optargs, unsigned args_count)
 {
-    for (size_t i = 0; i < args_count; i++)
+    for (unsigned i = 0; i < args_count; i++)
     {
         free(optargs[i]);
     }
@@ -207,11 +209,10 @@ void execute_chosen_command(FC flags, char* opts_args[])
 int main(int argc, char *argv[])
 {
     int result = SUCCESS_RESULT;
-
-    const int OPTS_WITH_ARGS_COUNT = 3;
+    const unsigned OPTS_WITH_ARGS_COUNT = 3;
     char** optargs = allocate_memory_for_option_arguments(OPTS_WITH_ARGS_COUNT);
-
     FC flags = generate_empty_flags_container();
+
     flags = parse_input(argc, argv, optargs, flags);
     flags = check_for_mandatory_option(flags);
     flags = check_for_options_exclusivity(flags);
