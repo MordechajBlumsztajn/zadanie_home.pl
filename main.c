@@ -4,15 +4,13 @@
 #include "input_processor.h"
 #include "process_info.h"
 
-
-void execute_chosen_command(FC flags, char* opts_args[]);
-
+void execute_chosen_command(FC flags, char *opts_args[]);
 
 int main(int argc, char *argv[])
 {
     int result = SUCCESS_RESULT;
     const unsigned OPTS_WITH_ARGS_COUNT = 3;
-    char** optargs = allocate_memory_for_option_arguments(OPTS_WITH_ARGS_COUNT);
+    char **optargs = allocate_memory_for_option_arguments(OPTS_WITH_ARGS_COUNT);
     FC flags = generate_empty_flags_container();
 
     flags = parse_input(argc, argv, optargs, flags);
@@ -33,23 +31,32 @@ int main(int argc, char *argv[])
     return result;
 }
 
-void execute_chosen_command(FC flags, char* opts_args[])
+void execute_chosen_command(FC flags, char *opts_args[])
 {
+    // const char *mode = "w";
+    // FILE* stream = flags.opt_flags & OPT_f_FLAG? fopen(opts_args[OPT_f_INDEX], mode) : stdout;
+    // fprintf(stream, "dupa\n");
+
+    // if (stream != stdout)
+    // {
+    //     fclose(stream);
+    // }
+
     fprintf(stdout, "ARGUMENTS: ");
-        if (flags.opt_flags & OPT_u_FLAG)
-        {
-            printf("-u %s ", opts_args[OPT_u_INDEX]);
-        }
+    if (flags.opt_flags & OPT_u_FLAG)
+    {
+        printf("-u %s ", opts_args[OPT_u_INDEX]);
+    }
 
-        if (flags.opt_flags & OPT_n_FLAG)
-        {
-            printf("-n %s ", opts_args[OPT_n_INDEX]);
-        }
+    if (flags.opt_flags & OPT_n_FLAG)
+    {
+        printf("-n %s ", opts_args[OPT_n_INDEX]);
+    }
 
-        if (flags.opt_flags & OPT_f_FLAG)
-        {
-            printf("-f %s ", opts_args[OPT_f_INDEX]);
-        }
+    if (flags.opt_flags & OPT_f_FLAG)
+    {
+        printf("-f %s ", opts_args[OPT_f_INDEX]);
+    }
 
-        printf("\n");
+    printf("\n");
 }
