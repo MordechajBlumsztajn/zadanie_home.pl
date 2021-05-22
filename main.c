@@ -2,6 +2,7 @@
 
 #include "utilities.h"
 #include "input_processor.h"
+#include "process_info.h"
 
 
 void execute_chosen_command(FC flags, char* opts_args[]);
