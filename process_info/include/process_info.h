@@ -11,9 +11,9 @@
 #include <dirent.h>
 
 FILE* open_file_to_write_if_requested(char* filename);
-void close_file_if_needed(FILE* stream);
+void close_file_if_not_stdout(FILE* stream);
 void print_all_procs_info(char* filename);
-void print_proc_name(char* pid, char* filename);
-void print_proc_pid(char* process_name, char* filename);
+void print_proc_name_from_pid(char* pid, char* filename);
+void print_proc_pid_from_name(char* process_name, char* filename);
 
 #endif

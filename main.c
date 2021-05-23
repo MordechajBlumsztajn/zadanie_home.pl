@@ -41,10 +41,10 @@ void execute_chosen_command(FC flags, char *optargs[])
             print_all_procs_info(filename);
             break;
         case OPT_u_FLAG:
-            print_proc_name(optargs[OPT_u_INDEX], filename);
+            print_proc_name_from_pid(optargs[OPT_u_INDEX], filename);
             break;
         case OPT_n_FLAG:
-            print_proc_pid(optargs[OPT_n_INDEX], filename);
+            print_proc_pid_from_name(optargs[OPT_n_INDEX], filename);
             break;
     }
 }
