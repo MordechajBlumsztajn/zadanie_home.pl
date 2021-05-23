@@ -6,12 +6,12 @@ const char *const CMDLINE_FILENAME = "cmdline";
 const char *const ZOMBIE_PROCESS_STR = "[Z]";
 const char FORWARD_SLASH_CHAR = '/';
 
-FILE *open_file_to_write_if_requested(bool write_to_file, char *filename)
+FILE *open_file_to_write_if_requested(char *filename)
 {
     const char *const mode = "w";
     FILE *stream = stdout;
 
-    if (write_to_file)
+    if (filename != NULL)
     {
         stream = fopen(filename, mode);
         if (NULL == stream)
@@ -24,9 +24,9 @@ FILE *open_file_to_write_if_requested(bool write_to_file, char *filename)
     return stream;
 }
 
-void close_file_if_needed(bool write_to_file, FILE *stream)
+void close_file_if_not_stdout(FILE *stream)
 {
-    if (write_to_file && stream != NULL && stream != stdout)
+    if (stream != NULL && stream != stdout)
     {
         fclose(stream);
     }
@@ -66,15 +66,15 @@ char* get_last_element_from_path(char* path)
 }
 
 // option -a
-void print_all_procs_info(bool write_to_file, char *filename)
+void print_all_procs_info(char *filename)
 {
-    FILE *stream = open_file_to_write_if_requested(write_to_file, filename);
+    FILE *stream = open_file_to_write_if_requested(filename);
 
     struct dirent *ptr_proc_dirent = NULL;
     DIR *ptr_proc_dir = opendir(PROC_PATH);
     if (NULL == ptr_proc_dir)
     {
-        close_file_if_needed(write_to_file, stream);
+        close_file_if_not_stdout(stream);
         fprintf(stderr, "critical error: %s\n", strerror(errno));
         exit(errno);
     }
@@ -98,7 +98,7 @@ void print_all_procs_info(bool write_to_file, char *filename)
             DIR *ptr_proc_subdir = opendir(proc_subpath);
             if (NULL == ptr_proc_subdir)
             {
-                close_file_if_needed(write_to_file, stream);
+                close_file_if_not_stdout(stream);
                 fprintf(stderr, "critical error: %s\n", strerror(errno));
                 exit(errno);
             }
@@ -181,25 +181,25 @@ void print_all_procs_info(bool write_to_file, char *filename)
     }
 
     closedir(ptr_proc_dir);
-    close_file_if_needed(write_to_file, stream);
+    close_file_if_not_stdout(stream);
 }
 
 // option -u
-void print_proc_name(char *pid, bool write_to_file, char *filename)
+void print_proc_name(char *pid, char *filename)
 {
-    FILE *stream = open_file_to_write_if_requested(write_to_file, filename);
+    FILE *stream = open_file_to_write_if_requested(filename);
 
     fprintf(stream, "-u %s\n", pid);
 
-    close_file_if_needed(write_to_file, stream);
+    close_file_if_not_stdout(stream);
 }
 
 // option -n
-void print_proc_pid(char *process_name, bool write_to_file, char *filename)
+void print_proc_pid(char *process_name, char *filename)
 {
-    FILE *stream = open_file_to_write_if_requested(write_to_file, filename);
+    FILE *stream = open_file_to_write_if_requested(filename);
 
     fprintf(stream, "-n %s\n", process_name);
 
-    close_file_if_needed(write_to_file, stream);
+    close_file_if_not_stdout(stream);
 }

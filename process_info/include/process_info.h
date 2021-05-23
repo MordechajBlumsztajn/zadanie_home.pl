@@ -10,10 +10,10 @@
 
 #include <dirent.h>
 
-FILE* open_file_to_write_if_requested(bool write_to_file, char* filename);
-void close_file_if_needed(bool write_to_file, FILE* stream);
-void print_all_procs_info(bool write_to_file, char* filename);
-void print_proc_name(char* pid, bool write_to_file, char* filename);
-void print_proc_pid(char* process_name, bool write_to_file, char* filename);
+FILE* open_file_to_write_if_requested(char* filename);
+void close_file_if_needed(FILE* stream);
+void print_all_procs_info(char* filename);
+void print_proc_name(char* pid, char* filename);
+void print_proc_pid(char* process_name, char* filename);
 
 #endif
