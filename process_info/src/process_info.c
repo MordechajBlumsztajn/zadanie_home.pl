@@ -1,6 +1,6 @@
 #include "process_info.h"
 
-FILE* open_file_if_requested(bool write_to_file, char* filename)
+FILE* open_file_to_write_if_requested(bool write_to_file, char* filename)
 {
     return NULL;
 }
@@ -18,7 +18,7 @@ void close_file_if_needed(bool write_to_file, FILE* stream)
 // option -a
 void print_all_processes_info(bool write_to_file, char* filename)
 {
-    FILE* stream = open_file_if_requested(write_to_file, filename);
+    FILE* stream = open_file_to_write_if_requested(write_to_file, filename);
 
     printf("-a ");
 
@@ -28,7 +28,7 @@ void print_all_processes_info(bool write_to_file, char* filename)
 // option -u
 void print_process_name(char* pid, bool write_to_file, char* filename)
 {
-    FILE* stream = open_file_if_requested(write_to_file, filename);
+    FILE* stream = open_file_to_write_if_requested(write_to_file, filename);
 
     printf("-u %s ", pid);
     
@@ -38,7 +38,7 @@ void print_process_name(char* pid, bool write_to_file, char* filename)
 // option -n
 void print_process_pid(char* process_name, bool write_to_file, char* filename)
 {
-    FILE* stream = open_file_if_requested(write_to_file, filename);
+    FILE* stream = open_file_to_write_if_requested(write_to_file, filename);
 
     printf("-n %s ", process_name);
     
