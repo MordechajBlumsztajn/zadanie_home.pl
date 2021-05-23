@@ -33,8 +33,8 @@ enum OPTS_ERROR_FLAG
 
 struct flags_container
 {
-    int opt_flags;
-    int errors_flags;
+    int opts;
+    int errors;
 };
 typedef struct flags_container FC;
 

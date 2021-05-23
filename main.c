@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
 
 void execute_chosen_command(FC flags, char *optargs[])
 {
-    bool write_to_file = is_flag_set(flags.opt_flags, OPT_f_FLAG);
+    bool write_to_file = is_flag_set(flags.opts, OPT_f_FLAG);
     char* filename = write_to_file? optargs[OPT_f_INDEX] : NULL;
 
-    switch(unset_flag(flags.opt_flags, OPT_f_FLAG))
+    switch(unset_flag(flags.opts, OPT_f_FLAG))
     {
         case OPT_a_FLAG:
             print_all_processes_info(write_to_file, filename);
