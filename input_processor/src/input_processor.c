@@ -11,7 +11,7 @@ void copy_option_argument(char** destination, enum OPTS_WITH_ARGS_INDEX_ORDER in
     strcpy(destination[index], source);
 }
 
-FC parse_input(int argc, char* argv[], char* optsargs[], FC flags)
+FC parse_input(int argc, char* argv[], char* optargs[], FC flags)
 {
     const char* const OPTS_STRING = ":au:n:f:";
 
@@ -21,35 +21,35 @@ FC parse_input(int argc, char* argv[], char* optsargs[], FC flags)
         switch (opt)
         {
         case 'a':
-            flags.opt_flags |= OPT_a_FLAG;
+            flags.opt_flags = set_flag(flags.opt_flags, OPT_a_FLAG);
             break;
         case 'u':
-            copy_option_argument(optsargs, OPT_u_INDEX, optarg);
-            flags.opt_flags |= OPT_u_FLAG;
+            copy_option_argument(optargs, OPT_u_INDEX, optarg);
+            flags.opt_flags = set_flag(flags.opt_flags, OPT_u_FLAG);
             break;
         case 'n':
-            copy_option_argument(optsargs, OPT_n_INDEX, optarg);
-            flags.opt_flags |= OPT_n_FLAG;
+            copy_option_argument(optargs, OPT_n_INDEX, optarg);
+            flags.opt_flags = set_flag(flags.opt_flags, OPT_n_FLAG);
             break;
         case 'f':
-            copy_option_argument(optsargs, OPT_f_INDEX, optarg);
-            flags.opt_flags |= OPT_f_FLAG;
+            copy_option_argument(optargs, OPT_f_INDEX, optarg);
+            flags.opt_flags = set_flag(flags.opt_flags, OPT_f_FLAG);
             break;
         case '?':
-            flags.errors_flags |= UNKNOWN_OPTION_ERROR;
+            flags.errors_flags = set_flag(flags.errors_flags, UNKNOWN_OPTION_ERROR);
             fprintf(stderr, "error: Unknown option: %c.\n", optopt);
             break;
         case ':':
-            flags.errors_flags |= ARG_REQUIRED_ERROR;
+            flags.errors_flags = set_flag(flags.errors_flags, ARG_REQUIRED_ERROR);
             fprintf(stderr, "error: Option %c requires an argument.\n", optopt);
 
             switch (optopt)
             {
             case 'u':
-                flags.opt_flags |= OPT_u_FLAG;
+                flags.opt_flags = set_flag(flags.opt_flags, OPT_u_FLAG);
                 break;
             case 'n':
-                flags.opt_flags |= OPT_n_FLAG;
+                flags.opt_flags = set_flag(flags.opt_flags, OPT_n_FLAG);
                 break;
             }
             
@@ -61,23 +61,25 @@ FC parse_input(int argc, char* argv[], char* optsargs[], FC flags)
 
 FC check_for_mandatory_option(FC flags)
 {
-    if (!(flags.opt_flags & (OPT_a_FLAG | OPT_u_FLAG | OPT_n_FLAG)))
+    if (is_flag_not_set(flags.opt_flags, OPT_a_FLAG | OPT_u_FLAG | OPT_n_FLAG))
     {
+        flags.errors_flags = set_flag(flags.errors_flags, MANDATORY_OPT_ERROR);
         fprintf(stderr, "error: One of these options needs to be chosen: -a, -u, -n.\n");
-        flags.errors_flags |= MANDATORY_OPT_ERROR;
     }
     return flags;
 }
 
-FC check_for_options_exclusivity(FC flags)
+FC check_for_option_exclusivity(FC flags)
 {
     const int MAX_EXCLUSIVE_OPTS_COUNT = 1;
 
-    if ((((flags.opt_flags & OPT_a_FLAG) > 0) + ((flags.opt_flags & OPT_u_FLAG) > 0) + 
-            ((flags.opt_flags & OPT_n_FLAG) > 0)) > MAX_EXCLUSIVE_OPTS_COUNT)
+    if (is_flag_set(flags.opt_flags, OPT_a_FLAG) + 
+        is_flag_set(flags.opt_flags, OPT_u_FLAG) +
+        is_flag_set(flags.opt_flags, OPT_n_FLAG) > 
+        MAX_EXCLUSIVE_OPTS_COUNT)
     {
+        flags.errors_flags = set_flag(flags.errors_flags, EXCLUSIVE_OPTS_ERROR);
         fprintf(stderr, "error: Only one of these options can be chosen: -a, -u, -n.\n");
-        flags.errors_flags |= EXCLUSIVE_OPTS_ERROR;
     }
     return flags;
 }
@@ -86,6 +88,7 @@ FC check_for_non_optional_arguments(int argc, char* argv[], FC flags)
 {
     if (optind < argc)
     {
+        flags.errors_flags = set_flag(flags.errors_flags, NON_OPT_ARG_ERROR);
         fprintf(stderr, "error: Program does not accept non-optional arguments:");
     
         while (optind < argc)
@@ -93,7 +96,6 @@ FC check_for_non_optional_arguments(int argc, char* argv[], FC flags)
             printf(" \"%s\"", argv[optind++]);
         }
         printf(".\n");
-        flags.errors_flags |= NON_OPT_ARG_ERROR;
     }
 
     return flags;
@@ -101,7 +103,7 @@ FC check_for_non_optional_arguments(int argc, char* argv[], FC flags)
 
 bool error_occurred(FC flags)
 {
-    return flags.errors_flags > 0;
+    return is_any_flag_set(flags.errors_flags);
 }
 
 char** allocate_memory_for_option_arguments(unsigned args_count)

@@ -1,6 +1,8 @@
 #ifndef PID_DISPLAYER_UTILITIES_H
 #define PID_DISPLAYER_UTILITIES_H
 
+#include <stdbool.h>
+
 enum OPTS_FLAG
 {
     NO_OPT_FLAG     = 0x0,
@@ -37,5 +39,10 @@ struct flags_container
 typedef struct flags_container FC;
 
 FC generate_empty_flags_container();
+int set_flag(int flag, int mask);
+int unset_flag(int flag, int mask);
+bool is_flag_set(int flag, int mask);
+bool is_flag_not_set(int flag, int mask);
+bool is_any_flag_set(int flag);
 
 #endif

@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
     flags = parse_input(argc, argv, optargs, flags);
     flags = check_for_mandatory_option(flags);
-    flags = check_for_options_exclusivity(flags);
+    flags = check_for_option_exclusivity(flags);
     flags = check_for_non_optional_arguments(argc, argv, flags);
 
     if (error_occurred(flags))
@@ -31,32 +31,21 @@ int main(int argc, char *argv[])
     return result;
 }
 
-void execute_chosen_command(FC flags, char *opts_args[])
+void execute_chosen_command(FC flags, char *optargs[])
 {
-    // const char *mode = "w";
-    // FILE* stream = flags.opt_flags & OPT_f_FLAG? fopen(opts_args[OPT_f_INDEX], mode) : stdout;
-    // fprintf(stream, "dupa\n");
+    bool write_to_file = is_flag_set(flags.opt_flags, OPT_f_FLAG);
+    char* filename = write_to_file? optargs[OPT_f_INDEX] : NULL;
 
-    // if (stream != stdout)
-    // {
-    //     fclose(stream);
-    // }
-
-    fprintf(stdout, "ARGUMENTS: ");
-    if (flags.opt_flags & OPT_u_FLAG)
+    switch(unset_flag(flags.opt_flags, OPT_f_FLAG))
     {
-        printf("-u %s ", opts_args[OPT_u_INDEX]);
+        case OPT_a_FLAG:
+            print_all_processes_info(write_to_file, filename);
+            break;
+        case OPT_u_FLAG:
+            print_process_name(optargs[OPT_u_INDEX], write_to_file, filename);
+            break;
+        case OPT_n_FLAG:
+            print_process_pid(optargs[OPT_n_INDEX], write_to_file, filename);
+            break;
     }
-
-    if (flags.opt_flags & OPT_n_FLAG)
-    {
-        printf("-n %s ", opts_args[OPT_n_INDEX]);
-    }
-
-    if (flags.opt_flags & OPT_f_FLAG)
-    {
-        printf("-f %s ", opts_args[OPT_f_INDEX]);
-    }
-
-    printf("\n");
 }
