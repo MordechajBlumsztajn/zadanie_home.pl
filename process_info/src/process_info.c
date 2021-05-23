@@ -2,17 +2,28 @@
 
 FILE* open_file_to_write_if_requested(bool write_to_file, char* filename)
 {
-    return NULL;
+    const char* const mode = "w";
+    FILE* stream = stdout;
+
+    if (write_to_file)
+    {
+        stream = fopen(filename, mode);
+        if (NULL == stream)
+        {
+            fprintf(stderr, "critical error: %s\n", strerror(errno));
+            exit(errno);
+        }
+    }
+
+    return stream;
 }
 
 void close_file_if_needed(bool write_to_file, FILE* stream)
 {
-    printf("\n");
-
-    // if (write_to_file && !stream)
-    // {
-    //     fclose(stream);
-    // }
+    if (write_to_file && stream != NULL && stream != stdout)
+    {
+        fclose(stream);
+    }
 }
 
 // option -a
@@ -20,7 +31,7 @@ void print_all_processes_info(bool write_to_file, char* filename)
 {
     FILE* stream = open_file_to_write_if_requested(write_to_file, filename);
 
-    printf("-a ");
+    fprintf(stream, "-a\n");
 
     close_file_if_needed(write_to_file, stream);
 }
@@ -30,7 +41,7 @@ void print_process_name(char* pid, bool write_to_file, char* filename)
 {
     FILE* stream = open_file_to_write_if_requested(write_to_file, filename);
 
-    printf("-u %s ", pid);
+    fprintf(stream, "-u %s\n", pid);
     
     close_file_if_needed(write_to_file, stream);
 }
@@ -40,7 +51,7 @@ void print_process_pid(char* process_name, bool write_to_file, char* filename)
 {
     FILE* stream = open_file_to_write_if_requested(write_to_file, filename);
 
-    printf("-n %s ", process_name);
+    fprintf(stream, "-n %s\n", process_name);
     
     close_file_if_needed(write_to_file, stream);
 }

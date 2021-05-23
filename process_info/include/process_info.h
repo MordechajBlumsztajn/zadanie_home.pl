@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 
 FILE* open_file_to_write_if_requested(bool write_to_file, char* filename);
 void close_file_if_needed(bool write_to_file, FILE* stream);
