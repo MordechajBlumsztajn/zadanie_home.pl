@@ -39,13 +39,13 @@ void execute_chosen_command(FC flags, char *optargs[])
     switch(unset_flag(flags.opts, OPT_f_FLAG))
     {
         case OPT_a_FLAG:
-            print_all_processes_info(write_to_file, filename);
+            print_all_procs_info(write_to_file, filename);
             break;
         case OPT_u_FLAG:
-            print_process_name(optargs[OPT_u_INDEX], write_to_file, filename);
+            print_proc_name(optargs[OPT_u_INDEX], write_to_file, filename);
             break;
         case OPT_n_FLAG:
-            print_process_pid(optargs[OPT_n_INDEX], write_to_file, filename);
+            print_proc_pid(optargs[OPT_n_INDEX], write_to_file, filename);
             break;
     }
 }
