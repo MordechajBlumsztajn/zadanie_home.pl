@@ -2,6 +2,14 @@
 #define PID_DISPLAYER_UTILITIES_H
 
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <dirent.h>
+
+extern const char *const PROC_PATH;
+extern const char *const PROC_NAME_FILENAME;
 
 enum OPTS_FLAG
 {
@@ -44,5 +52,14 @@ int unset_flag(int flag, int mask);
 bool is_flag_set(int flag, int mask);
 bool is_flag_not_set(int flag, int mask);
 bool is_any_flag_set(int flag);
+
+FILE* open_file_to_write_if_requested(char* filename);
+void close_file_if_not_stdout(FILE* stream);
+bool is_string_a_number(char *str);
+char *get_last_element_from_path(char *path);
+char *create_path_from_2_strings(const char *const left, const char *const right);
+DIR *opendir_and_verify(const char *const dirpath);
+unsigned get_file_content_length(const char *const path);
+char *get_file_content(const char *const path, unsigned length);
 
 #endif
