@@ -16,6 +16,7 @@ FC parse_input(int argc, char* argv[], char* optsargs[], FC flags);
 FC check_for_mandatory_option(FC flags);
 FC check_for_option_exclusivity(FC flags);
 FC check_for_non_optional_arguments(int argc, char* argv[], FC flags);
+FC check_for_numeric_arg(char** optargs, FC flags);
 bool error_occurred(FC flags);
 char** allocate_memory_for_option_arguments(unsigned args_count);
 void deallocate_option_arguments_memory(char** optargs, unsigned args_count);

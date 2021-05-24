@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     flags = check_for_mandatory_option(flags);
     flags = check_for_option_exclusivity(flags);
     flags = check_for_non_optional_arguments(argc, argv, flags);
+    flags = check_for_numeric_arg(optargs, flags);
 
     if (error_occurred(flags))
     {

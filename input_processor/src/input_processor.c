@@ -93,9 +93,23 @@ FC check_for_non_optional_arguments(int argc, char* argv[], FC flags)
     
         while (optind < argc)
         {
-            printf(" \"%s\"", argv[optind++]);
+            fprintf(stderr, " \"%s\"", argv[optind++]);
         }
-        printf(".\n");
+        fprintf(stderr, ".\n");
+    }
+
+    return flags;
+}
+
+FC check_for_numeric_arg(char** optargs, FC flags)
+{
+    if (is_flag_set(flags.opts, OPT_u_FLAG) && optargs[OPT_u_INDEX])
+    {
+        if (!is_string_a_number(optargs[OPT_u_INDEX]))
+        {
+            flags.errors = set_flag(flags.errors, NUMERIC_ARG_REQUIRED);
+            fprintf(stderr, "error: Option -u requires a numeric argument.\n");
+        }
     }
 
     return flags;

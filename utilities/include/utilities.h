@@ -36,7 +36,8 @@ enum OPTS_ERROR_FLAG
     ARG_REQUIRED_ERROR      = 0x2,
     MANDATORY_OPT_ERROR     = 0x4,
     EXCLUSIVE_OPTS_ERROR    = 0x8,
-    NON_OPT_ARG_ERROR       = 0x10
+    NON_OPT_ARG_ERROR       = 0x10,
+    NUMERIC_ARG_REQUIRED    = 0x20
 };
 
 struct flags_container
