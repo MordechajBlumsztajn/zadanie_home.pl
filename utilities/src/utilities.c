@@ -2,6 +2,17 @@
 
 const char *const PROC_PATH = "/proc";
 const char *const PROC_NAME_FILENAME = "comm";
+const char *const HELP_STR = 
+"usage: %s: { -a | -u <pid> | -n <name> } [ -f <file> ]\n"
+"description:\n"
+"   -a\n"
+"       print pids and names of all running processes\n"
+"   -u <pid>\n"
+"       print name of process with given <pid>\n"
+"   -n <name>\n"
+"       print pid of process with given <name>\n"
+"   -f <file>\n"
+"       write output to <file> instead of stdout\n";
 
 FC generate_empty_flags_container()
 {
@@ -175,4 +186,9 @@ char *get_file_content(const char *const path, unsigned length)
     }
 
     return file_content;
+}
+
+void print_help(const char *prog_name)
+{
+    fprintf(stdout, HELP_STR, prog_name);
 }

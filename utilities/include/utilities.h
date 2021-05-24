@@ -10,6 +10,7 @@
 
 extern const char *const PROC_PATH;
 extern const char *const PROC_NAME_FILENAME;
+extern const char *const HELP_STR;
 
 enum OPTS_FLAG
 {
@@ -62,5 +63,6 @@ char *create_path_from_2_strings(const char *const left, const char *const right
 DIR *opendir_and_verify(const char *const dirpath);
 unsigned get_file_content_length(const char *const path);
 char *get_file_content(const char *const path, unsigned length);
+void print_help(const char *prog_name);
 
 #endif

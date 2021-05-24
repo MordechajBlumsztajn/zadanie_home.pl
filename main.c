@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     if (error_occurred(flags))
     {
         result = EXIT_FAILURE;
+        print_help(argv[0]);
     }
     else
     {
