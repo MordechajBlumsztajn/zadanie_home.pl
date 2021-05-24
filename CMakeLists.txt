@@ -7,6 +7,6 @@ add_subdirectory(utilities)
 add_subdirectory(input_processor)
 add_subdirectory(process_info)
 
-add_executable(procinfo main.c)
+add_executable(PIDinfo main.c)
 
-target_link_libraries(procinfo utilities input_processor process_informer)
+target_link_libraries(PIDinfo utilities input_processor process_informer)
