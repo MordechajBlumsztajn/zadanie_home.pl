@@ -20,7 +20,7 @@ To run this project:
 * open a Linux terminal 
 * enter project's root directory in the terminal
 ```bash
-  cd zadanie_home.pl
+  cd Linux-Process-PID-Printer
 ```
 * create a new directory with a name "build" (or any other name, it doesn't really matter)
 ```bash
